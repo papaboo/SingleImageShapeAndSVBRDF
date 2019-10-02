@@ -16,7 +16,7 @@ import dataLoader
 from torch.utils.data import DataLoader
 
 parser = argparse.ArgumentParser()
-# The locationi of testing set
+# The location of testing set
 parser.add_argument('--imList', default='imList.txt', help='path to real images')
 parser.add_argument('--output', default = 'output', help='path to saving results')
 parser.add_argument('--modelRootInit', default = None, help = 'the directory where the initialization trained model is save')
@@ -220,13 +220,14 @@ for n in range(0, len(imList ) ):
     im = imBg * seg
 
     # Load data from cpu to gpu
-    segBatch.data.resize_(seg.shape )
-    segBatch.data.copy_(torch.from_numpy(seg ) )
+    with torch.no_grad():
+        segBatch.resize_(seg.shape )
+        segBatch.copy_(torch.from_numpy(seg ) )
 
-    imBatch.data.resize_(im.shape )
-    imBatch.data.copy_( torch.from_numpy(im ) )
-    imBgBatch.data.resize_(imBg.shape )
-    imBgBatch.data.copy_( torch.from_numpy(imBg ) )
+        imBatch.resize_(im.shape )
+        imBatch.copy_( torch.from_numpy(im ) )
+        imBgBatch.resize_(imBg.shape )
+        imBgBatch.copy_( torch.from_numpy(imBg ) )
 
     albedoPreds = []
     normalPreds = []
